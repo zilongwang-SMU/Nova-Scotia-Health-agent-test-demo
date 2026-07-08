@@ -5,7 +5,6 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_agent
 from langchain_core.prompts import ChatPromptTemplate
 from agent_tools import export_tool
-
 def agent_init():
     # Set up API key
     load_dotenv()
