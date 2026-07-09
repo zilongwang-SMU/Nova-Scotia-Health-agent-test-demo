@@ -1,9 +1,7 @@
 from langchain.tools import tool
 import pandas as pd
-from sqlalchemy import create_engine
-import urllib
-import os
-from dotenv import load_dotenv
+from database.database_connector import db_connector
+
  
 @tool
 def export_data(sql_query: str, output_file_name: str, output_file_type: str):
@@ -17,19 +15,10 @@ def export_data(sql_query: str, output_file_name: str, output_file_type: str):
         output_file_type (str): The desired output format, must be either 'csv' or 'xlsx'.
     """
     try:
-        # Part 1: Configure and Create SQLAlchemy Engine
-        load_dotenv()
-        DRIVER = os.environ.get('DB_DRIVER')
-        SERVER = os.environ.get('DB_SERVER') 
-        DATABASE = os.environ.get('DB_DATABASE') 
-        # URL-encode the driver to handle spaces and special characters
-        quoted_driver = urllib.parse.quote_plus(DRIVER)
-        # Create the standard SQLAlchemy connection URL
-        connection_url = f"mssql+pyodbc://{SERVER}/{DATABASE}?driver={quoted_driver}&Trusted_Connection=yes"
-        # Create the engine, which manages connections
-        engine = create_engine(connection_url)
- 
-        # Part 2: Connect, Query, and Export
+        # Part 1: Connect to the database
+        engine = db_connector()
+        
+        # Part 2: Execute the SQL query and export the results
         output_full_name = f"{output_file_name}"
         # The 'with' statement ensures the connection is automatically closed
         with engine.connect() as connection:
