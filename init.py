@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 from langchain.agents import create_agent
-from agent_tools import export_tool
+from tools import export_tool, sql_tool
 
 
 # Define your custom rules for the agent
@@ -24,7 +24,7 @@ def agent_init():
     load_dotenv()
     GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
     model = init_chat_model("google_genai:gemini-2.5-flash-lite")
-    tools = [export_tool.export_data] 
+    tools = [export_tool.export_data, sql_tool.sql_toolkit]
     # Initialize a agent
     agent = create_agent(model=model, tools=tools)
     return agent

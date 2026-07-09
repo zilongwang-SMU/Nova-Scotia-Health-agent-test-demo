@@ -9,9 +9,6 @@ def main():
     print("Data Agent is ready.")
 
     while True:
-        # Initialize an empty string for the AI response
-        response = ""
-        # Get a single HumanMessage object from the user
         human = message.read_input()
         state["messages"].append(human)
         state = agent.invoke(state)
